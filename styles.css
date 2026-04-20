@@ -1,0 +1,308 @@
+/* =========================================================
+   Modern Resume (HTML + CSS) — responsive, print-friendly
+   ========================================================= */
+
+/* 1) CSS Reset (lightweight) */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* 2) Theme tokens (CSS variables) */
+:root {
+  --bg: #0b1220;
+  --panel: rgba(255,255,255,0.06);
+  --panel-strong: rgba(255,255,255,0.10);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.72);
+  --border: rgba(255,255,255,0.12);
+  --shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+  --accent: #6ee7ff;
+  --accent-2: #a78bfa;
+
+  --radius: 18px;
+  --radius-sm: 12px;
+
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 20px;
+  --space-5: 28px;
+
+  --max: 1100px;
+}
+
+/* Optional: prefers-color-scheme light */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f7fb;
+    --panel: #ffffff;
+    --panel-strong: #ffffff;
+    --text: #1a1a1a;
+    --muted: #555;
+    --border: rgba(0,0,0,0.10);
+    --shadow: 0 10px 25px rgba(0,0,0,0.08);
+    --accent: #0077ff;
+    --accent-2: #7c3aed;
+  }
+}
+
+/* 3) Layout helpers */
+.container {
+  width: min(var(--max), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 4) Accessibility helpers */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+  padding: 10px 12px;
+  background: var(--panel-strong);
+  color: var(--text);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.skip-link:focus { left: 12px; z-index: 1000; }
+
+/* 5) Topbar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(90deg, rgba(110,231,255,0.10), rgba(167,139,250,0.10));
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 25px 0;
+}
+
+@media (max-width: 700px) {
+  .topbar__inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  background: radial-gradient(circle at top left, var(--accent), var(--accent-2));
+  box-shadow: var(--shadow);
+}
+
+.name {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.headline {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* 6) Cards + typography */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  box-shadow: var(--shadow);
+}
+
+.section-title {
+  margin: 0 0 var(--space-2);
+  font-size: 1.05rem;
+  letter-spacing: 0.2px;
+}
+
+.section-header { margin-bottom: var(--space-3); }
+
+.strong { font-weight: 750; margin: 0; }
+
+.muted { color: var(--muted); margin: 0; }
+
+a { color: inherit; text-decoration: none; border-bottom: 1px dashed transparent; }
+a:hover { border-bottom-color: var(--muted); }
+
+/* 7) Lists */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.label {
+  display: inline-block;
+  width: 80px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.stack { display: grid; gap: 10px; }
+
+/* 8) Chips */
+.chips { display: flex; gap: 10px; flex-wrap: wrap; }
+.chip {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  font-size: 0.95rem;
+}
+
+/* 9) Buttons, pills, links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  font-weight: 650;
+  transition: transform 0.10s ease, background 0.10s ease;
+}
+.btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.10); }
+.btn--primary {
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #06101a;
+}
+
+.pill {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* 10) Main content */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.project {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+}
+
+.project__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.project__title { margin: 0; font-size: 1rem; }
+
+.project__links { display: flex; gap: 12px; margin-top: 10px; }
+.link { color: var(--accent); font-weight: 650; }
+.link:hover { opacity: 0.9; border-bottom-color: transparent; }
+
+.timeline-item { margin-top: var(--space-3); }
+.timeline-item__title { margin: 0; font-size: 1rem; }
+
+.callout {
+  background: linear-gradient(135deg, rgba(110,231,255,0.12), rgba(167,139,250,0.12));
+  border-color: rgba(255,255,255,0.18);
+}
+.callout__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+
+/* 11) Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 18px 0;
+  margin-top: 12px;
+}
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* 12) Print styles (for exporting to PDF) */
+@media print {
+  :root {
+    --bg: #fff;
+    --panel: #fff;
+    --panel-strong: #fff;
+    --text: #000;
+    --muted: #333;
+    --border: #bbb;
+    --shadow: none;
+  }
+  body { background: #fff; }
+  .topbar, .footer, .actions, .skip-link { display: none !important; }
+  .layout { grid-template-columns: 1fr; padding: 0; }
+  .card { box-shadow: none; }
+  a { text-decoration: underline; border-bottom: none; }
+}
