@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketFlow | Marketplace</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="index.html">MarketFlow</a>
+      <nav>
+        <ul>
+          <li><a class="active" href="index.html">Marketplace</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="admin-products.html">Admin Products</a></li>
+          <li><a href="admin-users.html">Admin Users</a></li>
+          <li><a href="inventory-report.html">Inventory</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Shop Available Products</h1>
+    <p class="subtitle">Browse products, compare prices, and add items to your cart.</p>
+
+    <section class="card" aria-label="Search products">
+      <form>
+        <div>
+          <label for="search">Search products</label>
+          <input id="search" type="text" placeholder="Search by name, category, or SKU" />
+        </div>
+      </form>
+    </section>
+
+    <section class="grid products-grid" aria-label="Product listing">
+      <article class="card">
+        <h3>Wireless Headphones</h3>
+        <p>Noise-canceling headphones with 30-hour battery life.</p>
+        <p class="price">$89.99</p>
+        <p class="stock-ok">In stock: 42</p>
+        <a class="btn" href="cart.html">Add to Cart</a>
+      </article>
+
+      <article class="card">
+        <h3>Portable Blender</h3>
+        <p>Rechargeable blender for smoothies and protein shakes.</p>
+        <p class="price">$39.95</p>
+        <p class="stock-ok">In stock: 18</p>
+        <a class="btn" href="cart.html">Add to Cart</a>
+      </article>
+
+      <article class="card">
+        <h3>Smart Watch</h3>
+        <p>Fitness tracking, sleep metrics, and message notifications.</p>
+        <p class="price">$129.00</p>
+        <p class="stock-low">Low stock: 5</p>
+        <a class="btn" href="cart.html">Add to Cart</a>
+      </article>
+
+      <article class="card">
+        <h3>Ergonomic Keyboard</h3>
+        <p>Split-layout mechanical keyboard for all-day comfort.</p>
+        <p class="price">$74.50</p>
+        <p class="stock-ok">In stock: 25</p>
+        <a class="btn" href="cart.html">Add to Cart</a>
+      </article>
+    </section>
+
+    <p class="footer-note">Static prototype only (HTML/CSS). Backend and database integration will be added later.</p>
+  </main>
+</body>
+</html>
+
