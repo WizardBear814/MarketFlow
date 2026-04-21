@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketFlow | Cart</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="index.html">MarketFlow</a>
+      <nav>
+        <ul>
+          <li><a href="index.html">Marketplace</a></li>
+          <li><a class="active" href="cart.html">Cart</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="admin-products.html">Admin Products</a></li>
+          <li><a href="admin-users.html">Admin Users</a></li>
+          <li><a href="inventory-report.html">Inventory</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Your Cart</h1>
+    <p class="subtitle">Review your order, update quantities, and checkout.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Wireless Headphones</td>
+          <td>$89.99</td>
+          <td>1</td>
+          <td>$89.99</td>
+          <td><a class="btn btn-danger" href="#">Remove</a></td>
+        </tr>
+        <tr>
+          <td>Portable Blender</td>
+          <td>$39.95</td>
+          <td>2</td>
+          <td>$79.90</td>
+          <td><a class="btn btn-danger" href="#">Remove</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <section class="card" style="margin-top: 1rem;">
+      <h3>Order Summary</h3>
+      <p><strong>Total Items:</strong> 3</p>
+      <p><strong>Order Total:</strong> $169.89</p>
+      <a class="btn" href="#">Checkout</a>
+    </section>
+  </main>
+</body>
+</html>

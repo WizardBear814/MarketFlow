@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketFlow | Inventory Accounting</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="index.html">MarketFlow</a>
+      <nav>
+        <ul>
+          <li><a href="index.html">Marketplace</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="admin-products.html">Admin Products</a></li>
+          <li><a href="admin-users.html">Admin Users</a></li>
+          <li><a class="active" href="inventory-report.html">Inventory</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Inventory Accounting Dashboard</h1>
+    <p class="subtitle">Track sales, purchases, revenue, and profit at a glance.</p>
+
+    <section class="kpis" aria-label="Key metrics">
+      <article class="kpi">
+        <div class="label">Total Units Sold</div>
+        <div class="value">1,284</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Total Revenue</div>
+        <div class="value">$63,420</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Total Cost</div>
+        <div class="value">$38,910</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Estimated Profit</div>
+        <div class="value">$24,510</div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h3>Recent Sales / Purchase History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026-04-18</td>
+            <td>Sale</td>
+            <td>Wireless Headphones</td>
+            <td>3</td>
+            <td>$89.99</td>
+            <td>$269.97</td>
+          </tr>
+          <tr>
+            <td>2026-04-17</td>
+            <td>Purchase</td>
+            <td>Portable Blender</td>
+            <td>20</td>
+            <td>$21.00</td>
+            <td>$420.00</td>
+          </tr>
+          <tr>
+            <td>2026-04-16</td>
+            <td>Sale</td>
+            <td>Smart Watch</td>
+            <td>5</td>
+            <td>$129.00</td>
+            <td>$645.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
