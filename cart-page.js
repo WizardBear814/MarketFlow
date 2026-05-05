@@ -113,9 +113,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (err) { toast(err.message, 'error'); }
       });
 
-      // Checkout placeholder
+      // Checkout 
       document.getElementById('checkout-btn')?.addEventListener('click', () => {
-        toast('Checkout coming soon!', 'info');
+        try {
+          await request('/cart', { method: 'DELETE' });
+          toast('Thank you for checking out!!');
+          loadCart();
+        } catch (err) { toast(err.message, 'error'); }
       });
 
     } catch (err) {
