@@ -80,4 +80,29 @@ router.get('/me', protect, (req, res) => {
   res.json({ status: 'success', user: req.user });
 });
 
+// PUT /api/auth/me/role
+// Demo helper: lets a logged-in user change their own role quickly.
+router.put(
+  '/me/role',
+  protect,
+  [body('role').isIn(['buyer', 'seller', 'admin']).withMessage('Invalid role')],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { role: req.body.role },
+        { new: true, runValidators: true }
+      );
+      res.json({
+        status: 'success',
+        user: { id: user._id, fullName: user.fullName, email: user.email, role: user.role },
+      });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+);
+
 module.exports = router;
