@@ -132,12 +132,14 @@ router.delete('/', async (req, res) => {
 router.delete('/:productId', async (req, res) => {
   try {
     const { productId } = req.params;
+    const cart = await getOrCreateCart(req.user._id)
+
     if (!mongoose.isValidObjectId(productId)) {
       return res.status(400).json({ message: 'Invalid product ID' });
     }
 
-    const cart = await Cart.findOne({ user: req.user._id });
-    if (!cart) return res.json({ items: [], total: '0.00' });
+    const test = await Cart.findOne({ user: req.user._id });
+    if (!test) return res.json({ items: [], total: '0.00' });
 
     cart.items = cart.items.filter((i) => String(i.product) !== String(productId));
     await cart.save();
