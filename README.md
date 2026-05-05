@@ -25,6 +25,8 @@ Example .env file:
 
 PORT=3002
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.w5pz6vk.mongodb.net/marketflow?retryWrites=true&w=majority
+JWT_SECRET=exampletext
+JWT_EXPIRES_IN=7d
 
 IMPORTANT:
 - Replace <username> and <password> with your MongoDB credentials
