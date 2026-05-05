@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketFlow | Admin Users</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="api.js" defer></script>
+  <script src="admin-users-page.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="index.html">MarketFlow</a>
+      <nav>
+        <ul></ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Admin User Management</h1>
+    <p class="subtitle">Manage user accounts and access levels.</p>
+
+    <section class="card">
+      <h3>Create / Edit User</h3>
+      <form>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div>
+            <label for="user-name">Full Name</label>
+            <input id="user-name" type="text" placeholder="Full name" required />
+          </div>
+          <div>
+            <label for="user-email">Email</label>
+            <input id="user-email" type="email" placeholder="email@example.com" required />
+          </div>
+          <div>
+            <label for="role">Role</label>
+            <select id="role">
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn--primary" type="submit">Save User</button>
+      </form>
+    </section>
+
+    <section style="margin-top: 1rem;">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" class="muted">Loading…</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
