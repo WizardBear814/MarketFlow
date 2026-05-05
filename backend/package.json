@@ -1,11 +1,12 @@
 {
   "name": "marketflow",
   "version": "1.0.0",
-  "description": "",
+  "description": "MarketFlow — group final for ASE 220",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed": "node seed.js"
   },
   "keywords": [],
   "author": "",

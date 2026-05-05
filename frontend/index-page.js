@@ -1,12 +1,10 @@
-// index-page.js
-document.addEventListener('DOMContentLoaded', async () => {
+// index-page.js — Marketplace browse + search + add to cart
+document.addEventListener('DOMContentLoaded', () => {
   updateNav();
 
   const grid = document.querySelector('.products-grid');
   const searchInput = document.getElementById('search');
-  const searchForm = document.querySelector('form');
-  const footerNote = document.querySelector('.footer-note');
-  if (footerNote) footerNote.remove();
+  const searchForm = document.querySelector('main form');
 
   function productCard(p) {
     const inStock = p.quantity > 0;
@@ -22,34 +20,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p class="${stockClass}">${stockLabel}</p>
         ${inStock
           ? `<button type="button" class="btn btn--primary add-to-cart-btn" data-id="${p._id}">Add to Cart</button>`
-          : `<button type="button" class="btn" disabled style="opacity:0.4;cursor:not-allowed">Out of Stock</button>`
-        }
+          : `<button type="button" class="btn" disabled style="opacity:0.4;cursor:not-allowed">Out of Stock</button>`}
       </article>
     `;
   }
 
   async function loadProducts(search = '') {
-    grid.innerHTML = '<p style="color:var(--muted)">Loading products…</p>';
+    grid.innerHTML = '<p class="muted">Loading products…</p>';
     try {
       const qs = search ? `?search=${encodeURIComponent(search)}` : '';
       const data = await request(`/products${qs}`);
       if (!data.products.length) {
-        grid.innerHTML = '<p style="color:var(--muted)">No products found.</p>';
+        grid.innerHTML = '<p class="muted">No products found. Try a different search.</p>';
         return;
       }
       grid.innerHTML = data.products.map(productCard).join('');
       attachCartButtons();
     } catch (err) {
-      grid.innerHTML = `<p style="color:#dc2626">Failed to load products: ${err.message}</p>`;
+      grid.innerHTML = `<p style="color:var(--danger)">Failed to load products: ${err.message}</p>`;
     }
   }
 
   function attachCartButtons() {
-    grid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    grid.querySelectorAll('.add-to-cart-btn').forEach((btn) => {
       btn.addEventListener('click', async () => {
         if (!getToken()) {
           toast('Please log in to add items to your cart', 'error');
-          setTimeout(() => window.location.href = 'login.html', 1200);
+          setTimeout(() => (window.location.href = 'login.html'), 1000);
           return;
         }
         const productId = btn.dataset.id;
@@ -75,14 +72,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Search
   searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
     loadProducts(searchInput.value.trim());
   });
 
+  let debounce;
   searchInput.addEventListener('input', () => {
-    if (searchInput.value === '') loadProducts();
+    clearTimeout(debounce);
+    debounce = setTimeout(() => loadProducts(searchInput.value.trim()), 250);
   });
 
   loadProducts();

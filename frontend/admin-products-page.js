@@ -1,30 +1,26 @@
 // admin-products-page.js
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   updateNav();
+  if (!requireAuth(['seller', 'admin'])) return;
 
-  const user = getUser();
-  if (!user || (user.role !== 'admin' && user.role !== 'seller')) {
-    document.querySelector('main').innerHTML = `
-      <h1 class="page-title">Access Denied</h1>
-      <div class="card"><p>You must be an admin or seller to view this page.</p></div>`;
-    return;
-  }
-
-  const form = document.querySelector('form');
+  const form = document.querySelector('main form');
   const saveBtn = form.querySelector('button[type="submit"]');
   const clearBtn = form.querySelector('button[type="button"]');
-  const tbody = document.querySelector('tbody');
+  const tbody = document.querySelector('main table tbody');
+  const cardTitle = document.querySelector('main .card h3');
   let editingId = null;
 
   async function loadProducts() {
-    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted)">Loading…</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" class="muted">Loading…</td></tr>`;
     try {
       const data = await request('/products');
       if (!data.products.length) {
-        tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted)">No products yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="muted">No products yet.</td></tr>`;
         return;
       }
-      tbody.innerHTML = data.products.map(p => `
+      tbody.innerHTML = data.products
+        .map(
+          (p) => `
         <tr>
           <td>${p.sku}</td>
           <td>${p.name}</td>
@@ -37,15 +33,16 @@ document.addEventListener('DOMContentLoaded', async () => {
               data-name="${p.name}"
               data-price="${p.price}"
               data-qty="${p.quantity}"
-              data-desc="${(p.description || '').replace(/"/g,'&quot;')}">
+              data-desc="${(p.description || '').replace(/"/g, '&quot;')}">
               Edit
             </button>
             <button class="btn btn-danger delete-btn" data-id="${p._id}">Delete</button>
           </td>
-        </tr>`).join('');
+        </tr>`
+        )
+        .join('');
 
-      // Edit
-      tbody.querySelectorAll('.edit-btn').forEach(btn => {
+      tbody.querySelectorAll('.edit-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
           editingId = btn.dataset.id;
           document.getElementById('sku').value = btn.dataset.sku;
@@ -54,13 +51,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('quantity').value = btn.dataset.qty;
           document.getElementById('description').value = btn.dataset.desc;
           saveBtn.textContent = 'Update Product';
-          document.querySelector('.card h3').textContent = 'Editing: ' + btn.dataset.name;
+          cardTitle.textContent = 'Editing: ' + btn.dataset.name;
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       });
 
-      // Delete
-      tbody.querySelectorAll('.delete-btn').forEach(btn => {
+      tbody.querySelectorAll('.delete-btn').forEach((btn) => {
         btn.addEventListener('click', async () => {
           if (!confirm('Delete this product?')) return;
           btn.textContent = '…';
@@ -76,22 +72,25 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         });
       });
-
     } catch (err) {
-      tbody.innerHTML = `<tr><td colspan="5" style="color:#dc2626">${err.message}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger)">${err.message}</td></tr>`;
     }
   }
 
-  // Save / Update
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const body = {
       sku: document.getElementById('sku').value.trim(),
       name: document.getElementById('product-name').value.trim(),
       price: parseFloat(document.getElementById('price').value),
-      quantity: parseInt(document.getElementById('quantity').value),
+      quantity: parseInt(document.getElementById('quantity').value, 10),
       description: document.getElementById('description').value.trim(),
     };
+
+    if (!body.sku || !body.name || isNaN(body.price) || isNaN(body.quantity)) {
+      toast('Please fill in SKU, name, price, and quantity', 'error');
+      return;
+    }
 
     saveBtn.disabled = true;
     saveBtn.textContent = 'Saving…';
@@ -118,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     form.reset();
     editingId = null;
     saveBtn.textContent = 'Save Product';
-    document.querySelector('.card h3').textContent = 'Create / Edit Product';
+    cardTitle.textContent = 'Create / Edit Product';
   }
 
   clearBtn.addEventListener('click', clearForm);

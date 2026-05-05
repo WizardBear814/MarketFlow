@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateNav();
 
-  const form = document.querySelector('form');
+  const form = document.querySelector('main form');
   const btn = form.querySelector('button[type="submit"]');
 
   form.addEventListener('submit', async (e) => {
@@ -17,6 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = document.getElementById('register-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
 
+    if (!fullName || !email || !password) {
+      toast('Please fill in all fields', 'error');
+      return;
+    }
+    if (password.length < 6) {
+      toast('Password must be at least 6 characters', 'error');
+      return;
+    }
     if (password !== confirmPassword) {
       toast('Passwords do not match', 'error');
       return;
@@ -30,10 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         body: JSON.stringify({ fullName, email, password, confirmPassword }),
       });
-
       saveAuth(data.token, data.user);
       toast('Account created! Welcome, ' + data.user.fullName + '!');
-      setTimeout(() => window.location.href = 'index.html', 800);
+      setTimeout(() => (window.location.href = 'index.html'), 600);
     } catch (err) {
       toast(err.message, 'error');
       btn.textContent = 'Register';
