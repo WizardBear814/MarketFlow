@@ -5,6 +5,9 @@ const { body, validationResult } = require('express-validator');
 const Cart = require('./CartModel');
 const Product = require('./Product');
 const { protect } = require('./auth-middleware');
+const Transaction = require('./Transaction')
+
+console.log('cartjs is loaded');
 
 router.use(protect);
 
@@ -78,6 +81,51 @@ router.post(
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
+  }
+);
+
+//POST /api/cart/checkout
+  //this is needed because the checkout button wasn't working for buyers previously due to it updating the inventory page
+router.post('/checkout', async (req, res) => {
+    try{
+      const cart = await getOrCreateCart(req.user._id);
+      await cart.populate('items.product');
+
+    if (!cart.items.length){
+      return res.status(400).json({ message: 'The cart is empty' });
+      }
+
+    for (const item of cart.items) {
+      const product = item.product;
+    
+      if (!product){
+        return res.status(400).json({ message: 'The product no longer exists' });
+      }
+
+      if (item.quantity > product.quantity){
+        return res.status(400).json({ message: 'There is not enough stock to complete this purchase' });
+      }
+
+      product.quantity -= item.quantity;
+      await product.save();
+
+      await Transaction.create({
+        type: 'sale',
+        product: product._id,
+        quantity: item.quantity,
+        unitPrice: product.price,
+        total: item.quantity * product.price,
+        createdBy: req.user._id,
+      });
+    } 
+    cart.items =[];
+    await cart.save();
+
+    res.json({ message: 'Checkout complete!' });
+  }
+  catch (err){
+    res.status(500).json({ message: err.message });
+  }
   }
 );
 
