@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = form.querySelector('button[type="submit"]');
   const tbody = document.querySelector('main table tbody');
   const cardTitle = document.querySelector('main .card h3');
+  const makeMeBuyerBtn = document.getElementById('make-me-buyer');
+  const makeMeSellerBtn = document.getElementById('make-me-seller');
+  const makeMeAdminBtn = document.getElementById('make-me-admin');
   let editingId = null;
 
   // Add password field dynamically (needed for create, optional for edit)
@@ -162,5 +165,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   clearBtn.addEventListener('click', clearForm);
+
+  async function setMyRole(role, btn) {
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = 'Saving…';
+    try {
+      await request(`/users/${me.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ role }),
+      });
+      const nextUser = { ...me, role };
+      localStorage.setItem('mf_user', JSON.stringify(nextUser));
+      toast(`Your role is now ${role}`);
+      updateNav();
+      loadUsers();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  }
+
+  makeMeBuyerBtn?.addEventListener('click', () => setMyRole('buyer', makeMeBuyerBtn));
+  makeMeSellerBtn?.addEventListener('click', () => setMyRole('seller', makeMeSellerBtn));
+  makeMeAdminBtn?.addEventListener('click', () => setMyRole('admin', makeMeAdminBtn));
   loadUsers();
 });

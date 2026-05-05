@@ -92,6 +92,7 @@ function toast(msg, type = 'success') {
 const NAV_LINKS = [
   { href: 'index.html',            label: 'Marketplace',     roles: ['*'] },
   { href: 'cart.html',             label: 'Cart',            roles: ['buyer', 'seller', 'admin'] },
+  { href: 'sell.html',             label: 'Sell',            roles: ['auth'] },
   { href: 'admin-products.html',   label: 'Admin Products',  roles: ['seller', 'admin'] },
   { href: 'admin-users.html',      label: 'Admin Users',     roles: ['admin'] },
   { href: 'inventory-report.html', label: 'Inventory',       roles: ['seller', 'admin'] },
