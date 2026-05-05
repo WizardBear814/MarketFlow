@@ -1,93 +1,120 @@
 # MarketFlow
+Group final for ASE 220
 
-Group final for ASE 220.
 
-A nearby-marketplace web app where buyers can browse/search listings,
-contact sellers, and save items to a wishlist; sellers can create and
-manage listings; and admins can moderate listings and users.
+HOW TO RUN THE PROJECT (MongoDB + Backend)
 
-## Tech Stack
+1. Clone the Repository
+-----------------------
+git clone <your-repo-url>
+cd MarketFlow
 
-- **Frontend:** React (Vite) + React Router
-- **Backend:** Node.js + Express *(coming next)*
-- **Database:** MongoDB *(coming next)*
-- **External API:** Google Maps API *(coming next)*
 
-## Project Layout
-
-```
-MarketFlow/
-├── frontend/        # React app (this is what runs right now)
-│   ├── src/
-│   │   ├── api/         # mock API layer (localStorage-backed for now)
-│   │   ├── components/  # reusable UI pieces
-│   │   ├── context/     # AuthContext
-│   │   ├── pages/       # route pages
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── styles.css
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-├── backend/         # (coming next: Express + MongoDB)
-└── README.md
-```
-
-The old static HTML mockups (`index.html`, `login.html`, etc.) at the
-repo root are the prototype phase and can be removed once the React
-app is fully working.
-
-## Run the frontend
-
-```
-cd frontend
+2. Install Dependencies
+-----------------------
 npm install
-npm run dev
-```
 
-Then open the URL Vite prints (default `http://localhost:5173`).
 
-## Test credentials (mock data, seeded on first load)
+3. Set Up Environment Variables
+-------------------------------
+Create a .env file in the root of your project:
 
-- Buyer:  `buyer@marketflow.com` / `buyer123`
-- Seller: `seller@marketflow.com` / `seller123`
-- Admin:  `admin@marketflow.com` / `admin123`
+touch .env
 
-> Data is stored in your browser's `localStorage` for now.
-> To reset the demo data, open DevTools → Application → Local Storage and clear it.
+Example .env file:
 
-## What's implemented (frontend)
+PORT=3002
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.w5pz6vk.mongodb.net/marketflow?retryWrites=true&w=majority
+JWT_SECRET=exampletext
+JWT_EXPIRES_IN=7d
 
-- User registration, login, logout (mock)
-- Browse marketplace listings with search + category filter
-- View listing details, contact seller (reveal email)
-- Wishlist (add / view / remove)  *(buyer feature)*
-- Create / edit / delete listings  *(seller feature)*
-- Mark items as sold / available  *(seller feature)*
-- Admin: remove any listing
-- Admin: manage users (change role, enable/disable, delete)
-- Role-based navigation and route protection on the client
+IMPORTANT:
+- Replace <username> and <password> with your MongoDB credentials
+- If your password has special characters (like $), encode them:
+  $ → %24
+- Do NOT upload your .env file to GitHub
 
-## Planned API (to be implemented in `backend/`)
 
-| Method | Route                       | Purpose                          | Auth |
-|--------|-----------------------------|----------------------------------|------|
-| POST   | /auth/register              | Create a new user account        | No   |
-| POST   | /auth/login                 | Login + token                    | No   |
-| POST   | /auth/logout                | End the session                  | Yes  |
-| GET    | /listings                   | List/search products             | No   |
-| GET    | /listings/:id               | Get one listing                  | No   |
-| POST   | /listings                   | Create a listing                 | Yes (seller/admin) |
-| PUT    | /listings/:id               | Edit a listing                   | Yes (owner/admin) |
-| PATCH  | /listings/:id/status        | Mark sold / available            | Yes (owner/admin) |
-| DELETE | /listings/:id               | Remove a listing                 | Yes (owner/admin) |
-| GET    | /wishlist                   | Get current user's wishlist      | Yes  |
-| POST   | /wishlist/:listingId        | Add to wishlist                  | Yes  |
-| DELETE | /wishlist/:listingId        | Remove from wishlist             | Yes  |
-| GET    | /admin/users                | List all users                   | Yes (admin) |
-| PATCH  | /admin/users/:id            | Update role / status             | Yes (admin) |
-| DELETE | /admin/users/:id            | Delete a user                    | Yes (admin) |
+4. Set Up MongoDB (Cloud - Recommended)
+--------------------------------------
+1. Go to MongoDB Atlas
+2. Create a free cluster
+3. Create a database user (username + password)
+4. Add your IP address to the whitelist (or allow all for testing)
+5. Copy your connection string and paste it into MONGO_URI
 
-The frontend's `src/api/*.js` files already match these shapes, so
-swapping `localStorage` calls for `fetch` to the backend will be
-mostly mechanical.
+
+5. Run the Server
+-----------------
+node server.js
+
+You should see:
+MarketFlow API running on http://localhost:3002
+MongoDB connected
+
+
+6. Test the API
+---------------
+Open your browser or Postman:
+
+http://localhost:3002/
+
+If needed, add this test route in server.js:
+
+app.get('/', (req, res) => {
+  res.send('API is running');
+});
+
+Then refresh the browser.
+
+
+7. (If Project Has a Frontend)
+------------------------------
+In a new terminal:
+
+cd client
+npm install
+npm start
+
+Then open:
+http://localhost:3000
+
+
+8. Stop the Server
+------------------
+Press:
+Ctrl + C
+
+
+COMMON ISSUES
+-------------
+
+Cannot find module './config/db'
+- Make sure config/db.js exists
+- Check spelling and capitalization
+- Verify the file path is correct
+
+MongoDB connection fails
+- Check username and password
+- Make sure your IP is whitelisted in MongoDB Atlas
+- Encode special characters in password if needed
+
+Nothing shows in browser
+- Backend usually runs on API routes (like /api)
+- Make sure frontend is running separately if applicable
+
+
+TECH STACK
+----------
+Node.js
+Express
+MongoDB (Atlas)
+Mongoose
+
+
+SUMMARY
+-------
+- .env stores sensitive data
+- MongoDB Atlas is the database
+- node server.js runs the backend
+- Frontend (if included) runs separately
