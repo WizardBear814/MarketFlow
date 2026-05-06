@@ -5,7 +5,7 @@ const NAV_LINKS = [
   { to: '/', label: 'Marketplace', roles: ['*'] },
   { to: '/cart', label: 'Cart', roles: ['buyer', 'seller', 'admin'] },
   { to: '/sell', label: 'Sell', roles: ['seller', 'admin'] },
-  { to: '/admin-products', label: 'Admin Products', roles: ['seller', 'admin'] },
+  { to: '/admin-products', label: 'Admin Products', roles: ['admin'] },
   { to: '/admin-users', label: 'Admin Users', roles: ['admin'] },
   { to: '/inventory', label: 'Inventory', roles: ['seller', 'admin'] },
   { to: '/login', label: 'Login', roles: ['guest'] },

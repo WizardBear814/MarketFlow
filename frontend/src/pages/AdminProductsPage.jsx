@@ -5,7 +5,7 @@ import { useToast } from '../ToastContext';
 
 export function AdminProductsPage() {
   return (
-    <RequireAuth roles={['seller', 'admin']}>
+    <RequireAuth roles={['admin']}>
       <AdminProductsInner />
     </RequireAuth>
   );
