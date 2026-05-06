@@ -111,8 +111,20 @@ function ProductCard({ product: p, onAdd }) {
     else setBtnState('idle');
   }
 
+  const navigate = useNavigate();
+
   return (
-    <article className="card" data-id={p._id}>
+    <article
+      className="card"
+      data-id={p._id}
+      role="button"
+      tabIndex={0}
+      onClick={() => navigate(`/products/${p._id}`)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') navigate(`/products/${p._id}`);
+      }}
+      style={{ cursor: 'pointer' }}
+    >
       <p className="product-sku">{p.sku}</p>
       <h3>{p.name}</h3>
       <p>{p.description || 'No description available.'}</p>
@@ -123,12 +135,21 @@ function ProductCard({ product: p, onAdd }) {
           type="button"
           className="btn btn--primary add-to-cart-btn"
           disabled={btnState === 'loading'}
-          onClick={() => onAdd(p._id, btnSetter)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdd(p._id, btnSetter);
+          }}
         >
           {btnState === 'loading' ? 'Adding…' : btnState === 'added' ? '✓ Added' : 'Add to Cart'}
         </button>
       ) : (
-        <button type="button" className="btn" disabled style={{ opacity: 0.4, cursor: 'not-allowed' }}>
+        <button
+          type="button"
+          className="btn"
+          disabled
+          style={{ opacity: 0.4, cursor: 'not-allowed' }}
+          onClick={(e) => e.stopPropagation()}
+        >
           Out of Stock
         </button>
       )}

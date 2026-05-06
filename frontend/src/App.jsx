@@ -6,6 +6,7 @@ import { CartPage } from './pages/CartPage';
 import { HomePage } from './pages/HomePage';
 import { InventoryPage } from './pages/InventoryPage';
 import { LoginPage } from './pages/LoginPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { SellPage } from './pages/SellPage';
 
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="cart" element={<CartPage />} />
+        <Route path="products/:id" element={<ProductDetailPage />} />
         <Route path="sell" element={<SellPage />} />
         <Route path="admin-products" element={<AdminProductsPage />} />
         <Route path="admin-users" element={<AdminUsersPage />} />

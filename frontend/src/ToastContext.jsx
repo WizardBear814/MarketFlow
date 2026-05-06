@@ -33,7 +33,6 @@ export function ToastProvider({ children }) {
               fontWeight: 600,
               color: '#fff',
               maxWidth: 320,
-              boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
               background: bg,
             }}
           >
