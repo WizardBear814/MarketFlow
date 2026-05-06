@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const Product = require('./Product');
-const { protect } = require('./auth-middleware');
+const { protect, restrictTo } = require('./auth-middleware');
 
 // GET /api/products  (public, optional ?search=)
 router.get('/', async (req, res) => {
@@ -48,6 +48,7 @@ router.get('/:id', async (req, res) => {
 router.post(
   '/',
   protect,
+  restrictTo('seller', 'admin'),
   [
     body('sku').trim().notEmpty().withMessage('SKU is required'),
     body('name').trim().notEmpty().withMessage('Name is required'),

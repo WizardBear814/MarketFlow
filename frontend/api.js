@@ -44,6 +44,13 @@ async function request(path, options = {}) {
       // Token expired or invalid → drop session so the user is forced to re-login
       clearAuth();
     }
+    if (res.status === 403) {
+      const raw = data.errors?.[0]?.msg || data.message || '';
+      const msgStr = typeof raw === 'string' ? raw : '';
+      if (msgStr.includes('suspended')) {
+        clearAuth();
+      }
+    }
     const msg = data.errors?.[0]?.msg || data.message || `Request failed (${res.status})`;
     throw new Error(msg);
   }

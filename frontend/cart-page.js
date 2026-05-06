@@ -114,12 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       document.getElementById('checkout-btn')?.addEventListener('click', async () => {
-        console.log('clicked checkout button');
         if (!confirm('Proceed to checkout? This will record the items as sales.')) return;
         try {
-          // Record each cart item as a sale transaction
-            //changed so that buyers can checkout, previously it was calling /inventory which buyers dont have access to
-          console.log('calling /cart/checkout');
           await request('/cart/checkout', { method: 'POST' });
           toast ('Checkout complete!');
           loadCart();

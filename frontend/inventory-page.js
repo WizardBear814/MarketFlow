@@ -6,6 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const me = getUser();
   const txForm = document.getElementById('tx-form');
   const txProductSelect = document.getElementById('tx-product');
+  const txPriceInput = document.getElementById('tx-price');
+
+  function syncUnitPriceFromProductSelect() {
+    const opt = txProductSelect.selectedOptions[0];
+    if (opt && opt.dataset.price != null) {
+      txPriceInput.value = opt.dataset.price;
+    }
+  }
+
+  txProductSelect.addEventListener('change', syncUnitPriceFromProductSelect);
 
   async function loadProductsIntoSelect() {
     try {
@@ -18,12 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .map((p) => `<option value="${p._id}" data-price="${p.price}">${p.name} — ${p.sku}</option>`)
         .join('');
 
-      // Auto-fill unit price from selected product
-      txProductSelect.addEventListener('change', () => {
-        const opt = txProductSelect.selectedOptions[0];
-        if (opt) document.getElementById('tx-price').value = opt.dataset.price;
-      });
-      txProductSelect.dispatchEvent(new Event('change'));
+      syncUnitPriceFromProductSelect();
     } catch (err) {
       txProductSelect.innerHTML = `<option value="">${err.message}</option>`;
     }
