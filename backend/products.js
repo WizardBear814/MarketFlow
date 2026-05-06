@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const Product = require('./Product');
-const { protect } = require('./auth-middleware');
+const { protect, restrictTo } = require('./auth-middleware');
 
 // GET /api/products  (public, optional ?search=)
 router.get('/', async (req, res) => {
@@ -36,7 +36,7 @@ router.get('/mine', protect, async (req, res) => {
 // GET /api/products/:id  (public)
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate('seller', 'fullName');
     if (!product) return res.status(404).json({ message: 'Product not found' });
     res.json({ status: 'success', product });
   } catch (err) {
@@ -48,6 +48,7 @@ router.get('/:id', async (req, res) => {
 router.post(
   '/',
   protect,
+  restrictTo('seller', 'admin'),
   [
     body('sku').trim().notEmpty().withMessage('SKU is required'),
     body('name').trim().notEmpty().withMessage('Name is required'),

@@ -10,7 +10,7 @@ Produced by Oscar Bankemper, Logan Lambert, Naeun Kim, and Aiden Gill.
 
 ## Tech stack
 
-- **Frontend:** Vanilla HTML / CSS / JavaScript (multi-page) — served as static files by the backend
+- **Frontend:** React (Vite) — production build output in `frontend/dist`, served by Express on the same port as `/api`
 - **Backend:** Node.js + Express
 - **Database:** MongoDB (Atlas) via Mongoose
 - **Auth:** JWT (`jsonwebtoken`) + `bcryptjs`
@@ -35,20 +35,19 @@ MarketFlow/
 │   ├── .env.example
 │   └── .gitignore
 │
-├── frontend/               # Static site served by Express on the same port
-│   ├── index.html
-│   ├── login.html, register.html, cart.html
-│   ├── admin-products.html, admin-users.html, inventory-report.html
-│   ├── api.js              # shared fetch / toast / nav / auth-guard helper
-│   ├── *-page.js           # one script per page
-│   └── styles.css
+├── frontend/               # React app (Vite): npm install + npm run build → dist/
+│   ├── src/                # components, pages, api helper, styles
+│   ├── index.html          # Vite entry
+│   ├── vite.config.js
+│   ├── package.json
+│   └── dist/               # production bundle (created by build)
 │
 ├── README.md
 └── .gitignore
 ```
 
-The backend serves both `/api/*` and the static frontend on the same port,
-so there's no CORS pain — open `http://localhost:3002/` and the page's `fetch('/api/...')` calls just work.
+The backend serves both `/api/*` and the built React app from `frontend/dist` on the same port,
+so there's no CORS pain — open `http://localhost:3002/` and the app's `fetch('/api/...')` calls hit the same origin.
 
 ## Setup (only needed once)
 
@@ -60,7 +59,17 @@ cd MarketFlow/backend
 npm install
 ```
 
-### 2. Create `.env`
+### 2. Install frontend dependencies and build the React app
+
+```bash
+cd ../frontend
+npm install
+npm run build
+```
+
+(Re-run `npm run build` in `frontend/` whenever you change the UI.)
+
+### 3. Create `.env`
 
 Inside `backend/`, copy the example file:
 
@@ -85,7 +94,7 @@ Tips:
 - Use MongoDB Atlas (free tier). Add your IP to the cluster's whitelist.
 - If your Atlas password contains special characters (`$`, `@`, `:`, etc.), URL-encode them.
 
-### 3. Seed test data (optional but recommended)
+### 4. Seed test data (optional but recommended)
 
 From inside `backend/`:
 
@@ -119,9 +128,9 @@ MarketFlow API running on http://localhost:3002
 Open the site:                   http://localhost:3002/
 ```
 
-Open `http://localhost:3002/` in your browser. The Express server delivers the
-`frontend/` files as static assets, and your `fetch('/api/...')` calls hit the
-same origin, so nothing extra needs to run.
+Open `http://localhost:3002/` in your browser. Express serves `frontend/dist` and `/api/*`.
+
+**Optional — frontend hot reload while coding:** from `frontend/`, run `npm run dev` (Vite on port 5173 with `/api` proxied to the backend). Run `npm start` in `backend/` at the same time.
 
 To stop, press `Ctrl + C` in the terminal.
 
@@ -139,12 +148,12 @@ To stop, press `Ctrl + C` in the terminal.
 
 ### Approved MVPs
 - **User registration and login** — `/api/auth/register`, `/api/auth/login`
-- **Browse marketplace listings** — `index.html` + `GET /api/products`
+- **Browse marketplace listings** — `/` + `GET /api/products`
 - **Search for items** — `?search=` on `/api/products`
-- **Create and manage listings** — `admin-products.html` (sellers + admins)
+- **Create and manage listings** — `/admin-products` (sellers + admins)
 - **Mark items as sold** — when a sale is recorded the product's stock is decremented; products with `quantity = 0` show **Out of stock**
 - **Admin: remove inappropriate listings** — `DELETE /api/products/:id` (admin only)
-- **Admin: manage users** — `admin-users.html` + `/api/users` (admin only)
+- **Admin: manage users** — `/admin-users` + `/api/users` (admin only)
 
 ### Stretch / extras
 - Cart with quantity adjustment, line removal, clear-cart, checkout that records sale transactions
@@ -235,7 +244,7 @@ Stock is enforced server-side — exceeding `product.quantity` returns `400`.
 |---|---|
 | `[db] Missing MONGO_URI environment variable.` | You forgot to create `backend/.env`. Copy from `.env.example`. |
 | `MongoDB connection error: ...` | Check the URI, your IP is whitelisted in Atlas, special chars URL-encoded. |
-| Login button doesn't disappear after login | Hard-refresh the page (cached JS). If still broken, ensure both `api.js` and the page-specific script are loaded. |
+| Blank page after deploy | Run `npm run build` in `frontend/` so `frontend/dist` exists before `npm start` in `backend/`. |
 | `401 Not authorized` on every request | Your JWT expired. Log out and log in again. |
 | Port already in use | Change `PORT` in `backend/.env`, then restart. |
 
