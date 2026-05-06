@@ -21,6 +21,7 @@ export function RegisterPage() {
     const email = String(fd.get('email') || '').trim();
     const password = String(fd.get('password') || '');
     const confirmPassword = String(fd.get('confirmPassword') || '');
+    const role = String(fd.get('role') || 'buyer');
     if (!fullName || !email || !password) {
       toast('Please fill in all fields', 'error');
       return;
@@ -37,7 +38,7 @@ export function RegisterPage() {
     try {
       const data = await request('/auth/register', {
         method: 'POST',
-        body: JSON.stringify({ fullName, email, password, confirmPassword }),
+        body: JSON.stringify({ fullName, email, password, confirmPassword, role }),
       });
       login(data.token, data.user);
       toast(`Account created! Welcome, ${data.user.fullName}!`);
@@ -59,6 +60,13 @@ export function RegisterPage() {
           <div>
             <label htmlFor="full-name">Full Name</label>
             <input id="full-name" name="fullName" type="text" placeholder="Jane Doe" required />
+          </div>
+          <div>
+            <label htmlFor="role">Account Type</label>
+            <select id="role" name="role" defaultValue="buyer">
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+            </select>
           </div>
           <div>
             <label htmlFor="register-email">Email</label>
