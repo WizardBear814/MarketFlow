@@ -8,6 +8,13 @@ and admins moderate listings, manage users, and review inventory KPIs.
 
 Produced by Oscar Bankemper, Logan Lambert, Naeun Kim, and Aiden Gill.
 
+Demo Video:
+https://youtu.be/_IHkjUNo_7M?si=Na1wEymbyemLxizB
+
+MarketFlow is a full-stack marketplace application. It unites buyers, sellers, and administrators on one platform with MongoDB-backed persistence and JWT authentication. Buyers discover items through listing pages and search, inspect product detail views, adjust cart quantities, and check out; successful purchases reduce stock and append structured sale records. Sellers author and update their own SKUs with server-enforced uniqueness and non-negative inventory. Administrators curate listings and user accounts that include roles and suspension, while every sensitive route requires valid tokens and appropriate roles on the server, not merely hidden buttons.
+
+The stack comprises a React (Vite) front end co-hosted with an Express JSON API to eliminate CORS friction; Mongoose models for users, products, carts, and transactions on MongoDB Atlas; bcrypt password hashing; and express-validator paired with form checks for clear error messaging. Seller and admin dashboards surface inventory KPIs computed from logged transactions. Responsive grids and navigation reflow for phones and laptops. Toast notifications highlight successes and failures without silent breakage. Seed scripts and documented REST endpoints help graders reproduce scenarios predictably within README assumptions. The result is an integrated demonstration of CRUD-rich workflows, disciplined authorization, and durable state appropriate for transparent, rigorous grading and clear live demos.
+
 ## Tech stack
 
 - **Frontend:** React (Vite) — production build output in `frontend/dist`, served by Express on the same port as `/api`
@@ -198,7 +205,7 @@ curl -X POST http://localhost:3002/api/auth/register \
 | GET    | `/api/products/:id`      | One product            | none                         |
 | POST   | `/api/products`          | Create                 | seller, admin                |
 | PUT    | `/api/products/:id`      | Update                 | seller, admin                |
-| DELETE | `/api/products/:id`      | Delete                 | admin                        |
+| DELETE | `/api/products/:id`      | Delete                 | admin, owner                 |
 
 `POST` body: `{ sku, name, description?, price, quantity }` — `409` if SKU exists.
 
