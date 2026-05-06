@@ -21,11 +21,12 @@ function canSee(roles, user) {
 
 export function Layout() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
-      <header>
-        <div className="container topbar">
+      <header className="topbar">
+        <div className="container topbar__inner">
           <Link className="brand" to="/">
             MarketFlow
           </Link>

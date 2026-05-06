@@ -142,7 +142,7 @@ main.container {
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
 }
 
-.container.topbar {
+.topbar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -218,14 +218,6 @@ nav a.active {
   nav a.active {
     background: linear-gradient(135deg, rgba(2, 132, 199, 0.12), rgba(109, 40, 217, 0.1));
   }
-}
-
-.topbar__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: 25px 0;
 }
 
 @media (max-width: 700px) {
