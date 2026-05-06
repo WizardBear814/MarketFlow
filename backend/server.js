@@ -17,15 +17,12 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Serve the static frontend (sibling folder) before body parsers
-// so static assets aren't touched by JSON middleware.
-const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
-app.use(express.static(FRONTEND_DIR));
+const FRONTEND_DIST = path.join(__dirname, '..', 'frontend', 'dist');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API routes
+// API routes (must be before SPA fallback)
 app.use('/api/auth',      require('./auth-routes'));
 app.use('/api/products',  require('./products'));
 app.use('/api/users',     require('./users'));
@@ -38,14 +35,17 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Convenience: GET / sends index.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
-});
-
-// 404 handler — only for /api/* paths so static HTML still works
+// 404 handler — only for /api/* paths
 app.use('/api', (req, res) => {
   res.status(404).json({ message: `Route ${req.originalUrl} not found` });
+});
+
+// Built React app (Vite output)
+app.use(express.static(FRONTEND_DIST));
+
+// SPA fallback for client-side routes (Express 5 does not accept app.get('*', ...))
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
 });
 
 // Generic error handler
