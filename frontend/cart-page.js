@@ -114,26 +114,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       document.getElementById('checkout-btn')?.addEventListener('click', async () => {
+        console.log('clicked checkout button');
         if (!confirm('Proceed to checkout? This will record the items as sales.')) return;
         try {
           // Record each cart item as a sale transaction
-          for (const item of data.items) {
-            const p = item.product;
-            await request('/inventory', {
-              method: 'POST',
-              body: JSON.stringify({
-                type: 'sale',
-                productId: p._id,
-                quantity: item.quantity,
-                unitPrice: p.price,
-              }),
-            });
-          }
-          await request('/cart', { method: 'DELETE' });
-          toast('Checkout complete! Thank you for your order.');
-          setTimeout(loadCart, 600);
-        } catch (err) {
-          toast('Checkout failed: ' + err.message, 'error');
+            //changed so that buyers can checkout, previously it was calling /inventory which buyers dont have access to
+          console.log('calling /cart/checkout');
+          await request('/cart/checkout', { method: 'POST' });
+          toast ('Checkout complete!');
+          loadCart();
+        }
+        catch (err){
+          toast('Checkout failed: ' + err.message);
         }
       });
     } catch (err) {

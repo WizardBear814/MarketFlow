@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.products-grid');
   const searchInput = document.getElementById('search');
   const searchForm = document.querySelector('main form');
+  const quickRoleCard = document.getElementById('quick-role-card');
+  const quickRoleBuyerBtn = document.getElementById('quick-role-buyer');
+  const quickRoleSellerBtn = document.getElementById('quick-role-seller');
+  const quickRoleAdminBtn = document.getElementById('quick-role-admin');
 
   function productCard(p) {
     const inStock = p.quantity > 0;
@@ -72,6 +76,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  async function setMyRole(role, btn) {
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    try {
+      const data = await request('/auth/me/role', {
+        method: 'PUT',
+        body: JSON.stringify({ role }),
+      });
+      saveAuth(getToken(), data.user);
+      updateNav();
+      toast(`Role updated to ${role}`);
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  }
+
   searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
     loadProducts(searchInput.value.trim());
@@ -82,6 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(debounce);
     debounce = setTimeout(() => loadProducts(searchInput.value.trim()), 250);
   });
+
+  if (getUser() && quickRoleCard) {
+    quickRoleCard.style.display = '';
+    quickRoleBuyerBtn?.addEventListener('click', () => setMyRole('buyer', quickRoleBuyerBtn));
+    quickRoleSellerBtn?.addEventListener('click', () => setMyRole('seller', quickRoleSellerBtn));
+    quickRoleAdminBtn?.addEventListener('click', () => setMyRole('admin', quickRoleAdminBtn));
+  }
 
   loadProducts();
 });

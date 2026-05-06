@@ -6,6 +6,8 @@ A multi-tier marketplace web app where buyers browse and search products,
 add them to a cart, and check out; sellers create and manage product listings;
 and admins moderate listings, manage users, and review inventory KPIs.
 
+Produced by Oscar Bankemper, Logan Lambert, Naeun Kim, and Aiden Gill.
+
 ## Tech stack
 
 - **Frontend:** Vanilla HTML / CSS / JavaScript (multi-page) — served as static files by the backend
